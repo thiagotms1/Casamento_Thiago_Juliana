@@ -1,7 +1,8 @@
 // Wedding RSVP Website JavaScript
 // Thiago & Juliana - 07 de Setembro 2025
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
+    emailjs.init('n2MylDf00cBbRnG1P'); // ✅ Inicializado apenas uma vez
     initCountdown();
     initNavigation();
     initRSVPForm();
@@ -10,22 +11,20 @@ document.addEventListener('DOMContentLoaded', function() {
     initMapFunctionality();
 });
 
-// ========================================
 // CONTADOR REGRESSIVO
-// ========================================
 function initCountdown() {
-    const weddingDate = new Date('2025-09-07T16:00:00').getTime();
-    
+    const weddingDate = new Date('2025-09-07T15:30:00').getTime(); // ✅ Corrigido para 15:30h
+
     function updateCountdown() {
         const now = new Date().getTime();
         const distance = weddingDate - now;
-        
+
         if (distance > 0) {
             const days = Math.floor(distance / (1000 * 60 * 60 * 24));
             const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
             const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
             const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-            
+
             updateElement('days', days);
             updateElement('hours', hours);
             updateElement('minutes', minutes);
@@ -33,51 +32,46 @@ function initCountdown() {
         } else {
             const countdownContainer = document.querySelector('.countdown');
             if (countdownContainer) {
-                countdownContainer.innerHTML = \`
+                countdownContainer.innerHTML = `
                     <div class="countdown__celebration">
                         <span class="countdown__number">🎉</span>
                         <span class="countdown__label">Casamos!</span>
                     </div>
-                \`;
+                `;
             }
         }
     }
-    
+
     function updateElement(id, value) {
         const element = document.getElementById(id);
         if (element) {
             element.textContent = value.toString().padStart(2, '0');
         }
     }
-    
+
     updateCountdown();
     setInterval(updateCountdown, 1000);
 }
 
-// ========================================
 // NAVEGAÇÃO
-// ========================================
 function initNavigation() {
     const navLinks = document.querySelectorAll('.nav__link');
-    
+
     navLinks.forEach(link => {
-        link.addEventListener('click', function(e) {
+        link.addEventListener('click', function (e) {
             e.preventDefault();
             const targetId = this.getAttribute('href');
             const targetSection = document.querySelector(targetId);
-            
+
             if (targetSection) {
                 const navHeight = document.querySelector('.nav').offsetHeight;
                 const targetPosition = targetSection.offsetTop - navHeight;
-                
-                window.scrollTo({
-                    top: targetPosition,
-                    behavior: 'smooth'
-                });
+
+                window.scrollTo({ top: targetPosition, behavior: 'smooth' });
             }
         });
     });
-    
+
     window.addEventListener('scroll', highlightActiveNavLink);
 }
 
@@ -85,18 +79,17 @@ function highlightActiveNavLink() {
     const sections = document.querySelectorAll('section[id]');
     const navLinks = document.querySelectorAll('.nav__link');
     const navHeight = document.querySelector('.nav').offsetHeight;
-    
     let currentSection = '';
-    
+
     sections.forEach(section => {
         const sectionTop = section.offsetTop - navHeight - 100;
         const sectionHeight = section.offsetHeight;
-        
+
         if (window.scrollY >= sectionTop && window.scrollY < sectionTop + sectionHeight) {
             currentSection = section.getAttribute('id');
         }
     });
-    
+
     navLinks.forEach(link => {
         link.classList.remove('active');
         if (link.getAttribute('href') === '#' + currentSection) {
@@ -105,9 +98,7 @@ function highlightActiveNavLink() {
     });
 }
 
-// ========================================
-// FORMULÁRIO RSVP
-// ========================================
+// RSVP
 function initRSVPForm() {
     const form = document.getElementById('rsvp-form');
     if (form) {
@@ -167,11 +158,10 @@ async function handleFormSubmit(e) {
         timestamp: new Date().toLocaleString('pt-BR'),
         local: 'Qiosque Moana - Barra da Tijuca, RJ',
         data: '07 de Setembro de 2025',
-        horarios: 'Cerimônia: 16:00h | Recepção: 17:00h'
+        horarios: 'Cerimônia: 15:30h | Recepção: no mesmo local'
     };
 
     try {
-        emailjs.init('n2MylDf00cBbRnG1P');
         const result = await emailjs.send('service_gukawrf', 'template_kwb4w5u', rsvpData);
         console.log('✅ Email enviado com sucesso:', result);
         showConfirmationMessage();
@@ -186,7 +176,6 @@ async function handleFormSubmit(e) {
     }
 }
 
-// Validação e mensagens auxiliares
 function validateForm(form) {
     const requiredFields = form.querySelectorAll('[required]');
     let isValid = true;
@@ -202,7 +191,7 @@ function validateForm(form) {
     });
 
     const emailField = form.querySelector('#email');
-    if (emailField && emailField.value && !isValidEmail(emailField.value)) {
+    if (emailField && !isValidEmail(emailField.value)) {
         showFieldError(emailField, 'Por favor, insira um email válido');
         isValid = false;
     }
@@ -210,7 +199,7 @@ function validateForm(form) {
     const confirmacao = form.querySelector('#confirmacao').value;
     const acompanhantes = form.querySelector('#acompanhantes').value;
 
-    if (confirmacao === 'Sim' && acompanhantes && acompanhantes.split('\\n').length > 5) {
+    if (confirmacao === 'Sim' && acompanhantes && acompanhantes.split('\n').length > 5) {
         showFieldError(form.querySelector('#acompanhantes'), 'Máximo de 5 acompanhantes permitido');
         isValid = false;
     }
@@ -219,7 +208,7 @@ function validateForm(form) {
 }
 
 function isValidEmail(email) {
-    return /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(email);
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 }
 
 function showFieldError(field, message) {
@@ -248,16 +237,6 @@ function showConfirmationMessage() {
         confirmationMessage.classList.remove('hidden');
         confirmationMessage.classList.add('fade-in');
         confirmationMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
-
-        setTimeout(() => {
-            const resetForm = confirm('Deseja fazer outra confirmação?');
-            if (resetForm) {
-                form.classList.remove('hidden');
-                confirmationMessage.classList.add('hidden');
-                form.reset();
-                initFormConditionals();
-            }
-        }, 8000);
     }
 }
 
@@ -268,7 +247,7 @@ function showErrorMessage(message) {
         errorMessage = document.createElement('div');
         errorMessage.id = 'error-message';
         errorMessage.className = 'error-message';
-        errorMessage.style.cssText = \`
+        errorMessage.style.cssText = `
             background: #fef2f2;
             border: 2px solid #fecaca;
             color: #dc2626;
@@ -276,14 +255,14 @@ function showErrorMessage(message) {
             border-radius: 8px;
             margin-top: 16px;
             text-align: center;
-        \`;
+        `;
         form.parentNode.appendChild(errorMessage);
     }
 
-    errorMessage.innerHTML = \`
+    errorMessage.innerHTML = `
         <div style="font-size: 2rem; margin-bottom: 8px;">⚠️</div>
-        <p style="margin: 0;">\${message}</p>
-    \`;
+        <p style="margin: 0;">${message}</p>
+    `;
 
     errorMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
 
@@ -292,15 +271,14 @@ function showErrorMessage(message) {
     }, 5000);
 }
 
-// ========================================
-// BOTÃO VOLTAR AO TOPO
-// ========================================
+// VOLTAR AO TOPO
 function initBackToTop() {
     const backToTopButton = document.getElementById('back-to-top');
     if (backToTopButton) {
         backToTopButton.addEventListener('click', () => {
             window.scrollTo({ top: 0, behavior: 'smooth' });
         });
+
         window.addEventListener('scroll', () => {
             backToTopButton.style.opacity = window.scrollY > 300 ? '1' : '0.7';
             backToTopButton.style.visibility = 'visible';
@@ -308,16 +286,14 @@ function initBackToTop() {
     }
 }
 
-// ========================================
 // MAPA
-// ========================================
 function initMapFunctionality() {
     const mapIframe = document.querySelector('.map-container iframe');
     if (mapIframe) {
         const loadingIndicator = document.createElement('div');
         loadingIndicator.className = 'map-loading';
         loadingIndicator.innerHTML = '📍 Carregando mapa...';
-        loadingIndicator.style.cssText = \`
+        loadingIndicator.style.cssText = `
             position: absolute;
             top: 50%;
             left: 50%;
@@ -327,22 +303,14 @@ function initMapFunctionality() {
             border-radius: 8px;
             font-size: 16px;
             z-index: 10;
-        \`;
+        `;
 
         mapIframe.parentNode.insertBefore(loadingIndicator, mapIframe);
 
         mapIframe.addEventListener('load', () => {
             setTimeout(() => {
-                if (loadingIndicator) loadingIndicator.remove();
+                loadingIndicator.remove();
             }, 1000);
         });
     }
 }
-"""
-
-# Salvar o conteúdo corrigido como um novo arquivo
-with open("/mnt/data/app_corrigido.js", "w", encoding="utf-8") as f:
-    f.write(app_js_corrigido)
-
-"/mnt/data/app_corrigido.js"
-
