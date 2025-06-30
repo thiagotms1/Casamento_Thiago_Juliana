@@ -1,8 +1,10 @@
+# Novo conteúdo do app.js com todas as correções solicitadas pelo Thiago
+app_js_final = """
 // Wedding RSVP Website JavaScript
 // Thiago & Juliana - 07 de Setembro 2025
 
 document.addEventListener('DOMContentLoaded', function () {
-    emailjs.init('n2MylDf00cBbRnG1P'); // ✅ Inicializado apenas uma vez
+    emailjs.init('n2MylDf00cBbRnG1P'); // Inicializado uma única vez
     initCountdown();
     initNavigation();
     initRSVPForm();
@@ -11,9 +13,8 @@ document.addEventListener('DOMContentLoaded', function () {
     initMapFunctionality();
 });
 
-// CONTADOR REGRESSIVO
 function initCountdown() {
-    const weddingDate = new Date('2025-09-07T15:30:00').getTime(); // ✅ Corrigido para 15:30h
+    const weddingDate = new Date('2025-09-07T15:30:00').getTime(); // Corrigido para 15:30h
 
     function updateCountdown() {
         const now = new Date().getTime();
@@ -53,25 +54,20 @@ function initCountdown() {
     setInterval(updateCountdown, 1000);
 }
 
-// NAVEGAÇÃO
 function initNavigation() {
     const navLinks = document.querySelectorAll('.nav__link');
-
     navLinks.forEach(link => {
         link.addEventListener('click', function (e) {
             e.preventDefault();
             const targetId = this.getAttribute('href');
             const targetSection = document.querySelector(targetId);
-
             if (targetSection) {
                 const navHeight = document.querySelector('.nav').offsetHeight;
                 const targetPosition = targetSection.offsetTop - navHeight;
-
                 window.scrollTo({ top: targetPosition, behavior: 'smooth' });
             }
         });
     });
-
     window.addEventListener('scroll', highlightActiveNavLink);
 }
 
@@ -84,7 +80,6 @@ function highlightActiveNavLink() {
     sections.forEach(section => {
         const sectionTop = section.offsetTop - navHeight - 100;
         const sectionHeight = section.offsetHeight;
-
         if (window.scrollY >= sectionTop && window.scrollY < sectionTop + sectionHeight) {
             currentSection = section.getAttribute('id');
         }
@@ -98,7 +93,6 @@ function highlightActiveNavLink() {
     });
 }
 
-// RSVP
 function initRSVPForm() {
     const form = document.getElementById('rsvp-form');
     if (form) {
@@ -164,7 +158,7 @@ async function handleFormSubmit(e) {
     try {
         const result = await emailjs.send('service_gukawrf', 'template_kwb4w5u', rsvpData);
         console.log('✅ Email enviado com sucesso:', result);
-        showConfirmationMessage();
+        showConfirmationMessage(rsvpData.confirmacao);
         form.reset();
         initFormConditionals();
     } catch (error) {
@@ -173,6 +167,37 @@ async function handleFormSubmit(e) {
     } finally {
         submitButton.textContent = originalText;
         submitButton.disabled = false;
+    }
+}
+
+function showConfirmationMessage(confirmacao) {
+    const form = document.getElementById('rsvp-form');
+    const confirmationMessage = document.getElementById('confirmation-message');
+    if (form && confirmationMessage) {
+        form.classList.add('hidden');
+        confirmationMessage.classList.remove('hidden');
+        confirmationMessage.classList.add('fade-in');
+        confirmationMessage.innerHTML = '';
+
+        if (confirmacao === 'Sim') {
+            confirmationMessage.innerHTML = `
+                <div class="confirmation-message__icon">✅</div>
+                <h3>Confirmação Recebida!</h3>
+                <p>Obrigado por confirmar sua presença. Aguardamos vocês no nosso grande dia!</p>
+                <p><small>Local: Qiosque Moana - Barra da Tijuca, RJ<br>
+                Data: 07 de Setembro de 2025 (Domingo)<br>
+                Cerimônia: 15:30h | Recepção: no mesmo local</small></p>
+            `;
+        } else {
+            confirmationMessage.innerHTML = `
+                <div class="confirmation-message__icon">💌</div>
+                <h3>Mensagem Recebida!</h3>
+                <p>Sentiremos sua falta nesse momento especial, mas agradecemos por nos avisar com carinho. 💖</p>
+                <p>Esperamos celebrar juntos em outras ocasiões felizes da vida!</p>
+            `;
+        }
+
+        confirmationMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }
 }
 
@@ -199,7 +224,7 @@ function validateForm(form) {
     const confirmacao = form.querySelector('#confirmacao').value;
     const acompanhantes = form.querySelector('#acompanhantes').value;
 
-    if (confirmacao === 'Sim' && acompanhantes && acompanhantes.split('\n').length > 5) {
+    if (confirmacao === 'Sim' && acompanhantes && acompanhantes.split('\\n').length > 5) {
         showFieldError(form.querySelector('#acompanhantes'), 'Máximo de 5 acompanhantes permitido');
         isValid = false;
     }
@@ -208,7 +233,7 @@ function validateForm(form) {
 }
 
 function isValidEmail(email) {
-    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    return /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(email);
 }
 
 function showFieldError(field, message) {
@@ -227,17 +252,6 @@ function clearFieldError(field) {
     field.style.borderColor = '';
     const existingError = field.parentNode.querySelector('.field-error');
     if (existingError) existingError.remove();
-}
-
-function showConfirmationMessage() {
-    const form = document.getElementById('rsvp-form');
-    const confirmationMessage = document.getElementById('confirmation-message');
-    if (form && confirmationMessage) {
-        form.classList.add('hidden');
-        confirmationMessage.classList.remove('hidden');
-        confirmationMessage.classList.add('fade-in');
-        confirmationMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    }
 }
 
 function showErrorMessage(message) {
@@ -271,7 +285,6 @@ function showErrorMessage(message) {
     }, 5000);
 }
 
-// VOLTAR AO TOPO
 function initBackToTop() {
     const backToTopButton = document.getElementById('back-to-top');
     if (backToTopButton) {
@@ -286,7 +299,6 @@ function initBackToTop() {
     }
 }
 
-// MAPA
 function initMapFunctionality() {
     const mapIframe = document.querySelector('.map-container iframe');
     if (mapIframe) {
