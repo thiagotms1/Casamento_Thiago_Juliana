@@ -232,7 +232,29 @@ function clearFieldError(field) {
 function showConfirmationMessage() {
     const form = document.getElementById('rsvp-form');
     const confirmationMessage = document.getElementById('confirmation-message');
+    const confirmacao = document.getElementById('confirmacao').value;
+
     if (form && confirmationMessage) {
+        let mensagem = '';
+
+        if (confirmacao === 'Não') {
+            mensagem = `
+                <div class="confirmation-message__icon">💌</div>
+                <h3>Mensagem Recebida!</h3>
+                <p>Sentiremos sua ausência, mas agradecemos de coração por nos avisar. 💌 Que possamos nos ver em uma próxima celebração!</p>
+            `;
+        } else {
+            mensagem = `
+                <div class="confirmation-message__icon">✅</div>
+                <h3>Confirmação Recebida!</h3>
+                <p>Obrigado por confirmar sua presença. Aguardamos vocês no nosso grande dia!</p>
+                <p><small>Local: Qiosque Moana - Barra da Tijuca, RJ<br>
+                Data: 07 de Setembro de 2025 (Domingo)<br>
+                Cerimônia: 15:30h | Recepção: No mesmo Local</small></p>
+            `;
+        }
+
+        confirmationMessage.innerHTML = mensagem;
         form.classList.add('hidden');
         confirmationMessage.classList.remove('hidden');
         confirmationMessage.classList.add('fade-in');
