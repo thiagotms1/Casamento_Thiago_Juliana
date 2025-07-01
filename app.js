@@ -162,7 +162,7 @@ async function handleFormSubmit(e) {
     };
 
     try {
-        const result = await emailjs.send('service_gukawrf', 'template_kwb4w5u', rsvpData);
+        const result = await emailjs.send('service_8c7kan5', 'template_kwb4w5u', rsvpData);
         console.log('✅ Email enviado com sucesso:', result);
         showConfirmationMessage();
         form.reset();
