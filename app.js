@@ -163,17 +163,21 @@ async function handleFormSubmit(e) {
 
     try {
         const result = await emailjs.send('service_8c7kan5', 'template_kwb4w5u', rsvpData);
-        console.log('✅ Email enviado com sucesso:', result);
-        showConfirmationMessage();
-        form.reset();
-        initFormConditionals();
-    } catch (error) {
-        console.error('❌ Erro ao enviar RSVP:', error);
-        showErrorMessage('Ocorreu um erro ao enviar sua confirmação. Tente novamente ou entre em contato conosco diretamente.');
-    } finally {
-        submitButton.textContent = originalText;
-        submitButton.disabled = false;
-    }
+    console.log('✅ Email enviado com sucesso aos noivos:', result);
+
+    // Envia o email de confirmação para o convidado
+    const resultGuest = await emailjs.send('service_8c7kan5', 'template_skldn6b', rsvpData);
+    console.log('✅ Email de confirmação enviado ao convidado:', resultGuest);
+
+    showConfirmationMessage();
+    form.reset();
+    initFormConditionals();
+} catch (error) {
+    console.error('❌ Erro ao enviar RSVP:', error);
+    showErrorMessage('Ocorreu um erro ao enviar sua confirmação. Tente novamente ou entre em contato conosco diretamente.');
+} finally {
+    submitButton.textContent = originalText;
+    submitButton.disabled = false;
 }
 
 function validateForm(form) {
