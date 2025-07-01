@@ -162,8 +162,14 @@ async function handleFormSubmit(e) {
     };
 
     try {
+        // Envia o email para os noivos
         const result = await emailjs.send('service_8c7kan5', 'template_kwb4w5u', rsvpData);
-        console.log('✅ Email enviado com sucesso:', result);
+        console.log('✅ Email enviado com sucesso aos noivos:', result);
+    
+        // Envia o email de confirmação para o convidado
+        const resultGuest = await emailjs.send('service_8c7kan5', 'template_skldn6b', rsvpData);
+        console.log('✅ Email de confirmação enviado ao convidado:', resultGuest);
+    
         showConfirmationMessage();
         form.reset();
         initFormConditionals();
@@ -174,7 +180,6 @@ async function handleFormSubmit(e) {
         submitButton.textContent = originalText;
         submitButton.disabled = false;
     }
-}
 
 function validateForm(form) {
     const requiredFields = form.querySelectorAll('[required]');
