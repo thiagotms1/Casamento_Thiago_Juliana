@@ -14,30 +14,6 @@
     
     <link rel="stylesheet" href="style.css">
 </head>
-<!-- app.js já está incluído acima -->
-<script>
-document.addEventListener("DOMContentLoaded", function () {
-    const iframe = document.querySelector('iframe[data-src]');
-
-    if (!iframe) return;
-
-    const observer = new IntersectionObserver(
-        entries => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    iframe.src = iframe.getAttribute('data-src');
-                    observer.unobserve(iframe);
-                }
-            });
-        },
-        { threshold: 0.5 }
-    );
-
-    observer.observe(iframe);
-});
-</script>
-</body>
-</html>
     
 <body>
     <!-- Navigation -->
