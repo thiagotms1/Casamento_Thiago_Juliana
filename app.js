@@ -242,6 +242,9 @@ function showConfirmationMessage() {
                 <div class="confirmation-message__icon">💌</div>
                 <h3>Mensagem Recebida!</h3>
                 <p>Sentiremos sua ausência, mas agradecemos de coração por nos avisar. 💌 Que possamos nos ver em uma próxima celebração!</p>
+                <a href="https://thiagotms1.github.io/listadecasamento/" target="_blank" class="btn btn--primary" style="margin-top: 16px;">
+                    🎁 Acessar Lista de Casamento
+                </a>
             `;
         } else {
             mensagem = `
@@ -251,15 +254,9 @@ function showConfirmationMessage() {
                 <p><small>Local: Qiosque Moana - Barra da Tijuca, RJ<br>
                 Data: 07 de Setembro de 2025 (Domingo)<br>
                 Cerimônia: 15:30h | Recepção: No mesmo Local</small></p>
-
-                <div style="margin-top: 20px;">
-                    <a href="https://www.google.com/calendar/render?action=TEMPLATE&text=Casamento%20Thiago%20e%20Juliana&dates=20250907T183000Z/20250907T233000Z&details=Casamento%20de%20Thiago%20e%20Juliana%20no%20Qiosque%20Moana%20-%20Barra%20da%20Tijuca%2C%20RJ&location=Qiosque%20Moana%2C%20Barra%20da%20Tijuca%2C%20RJ&sf=true&output=xml"
-                       target="_blank"
-                       class="btn btn--primary"
-                       style="display: inline-block; margin-top: 12px;">
-                        📅 Adicionar ao Google Calendar
-                    </a>
-                </div>
+                <a href="https://thiagotms1.github.io/listadecasamento/" target="_blank" class="btn btn--primary" style="margin-top: 16px;">
+                    🎁 Acessar Lista de Casamento
+                </a>
             `;
         }
 
