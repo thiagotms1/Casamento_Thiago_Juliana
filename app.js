@@ -242,7 +242,10 @@ function showConfirmationMessage() {
                 <div class="confirmation-message__icon">💌</div>
                 <h3>Mensagem Recebida!</h3>
                 <p>Sentiremos sua ausência, mas agradecemos de coração por nos avisar. 💌 Que possamos nos ver em uma próxima celebração!</p>
-                <a href="https://thiagotms1.github.io/listadecasamento/" target="_blank" class="btn btn--primary" style="margin-top: 16px;">
+                <a href="https://thiagotms1.github.io/listadecasamento/" 
+                   target="_blank" 
+                   class="btn btn--primary" 
+                   style="margin-top: 16px; color: white; text-decoration: none;">
                     🎁 Acessar Lista de Casamento
                 </a>
             `;
@@ -254,7 +257,10 @@ function showConfirmationMessage() {
                 <p><small>Local: Qiosque Moana - Barra da Tijuca, RJ<br>
                 Data: 07 de Setembro de 2025 (Domingo)<br>
                 Cerimônia: 15:30h | Recepção: No mesmo Local</small></p>
-                <a href="https://thiagotms1.github.io/listadecasamento/" target="_blank" class="btn btn--primary" style="margin-top: 16px;">
+                <a href="https://thiagotms1.github.io/listadecasamento/" 
+                   target="_blank" 
+                   class="btn btn--primary" 
+                   style="margin-top: 16px; color: white; text-decoration: none;">
                     🎁 Acessar Lista de Casamento
                 </a>
             `;
